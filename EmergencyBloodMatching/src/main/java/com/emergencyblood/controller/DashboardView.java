@@ -1,14 +1,21 @@
 package com.emergencyblood.controller;
 
+import com.emergencyblood.model.Donor;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Screen 1: Dashboard View displaying summary cards and quick action navigation.
+ * Screen 1: Dashboard View displaying live metric cards, quick actions,
+ * emergency readiness stock grid, and recent donors list.
+ * Styled with Light Premium White Theme.
  */
 public class DashboardView {
 
@@ -18,21 +25,27 @@ public class DashboardView {
     public DashboardView(NavigationController navigation) {
         this.navigation = navigation;
 
-        root = new VBox(25);
+        root = new VBox(22);
         root.setAlignment(Pos.TOP_LEFT);
 
-        // 1. Metric Summary Cards Row
+        int totalDonors = navigation.getSharedDonorList().size();
+        long availableDonors = navigation.getSharedDonorList().stream()
+                .filter(d -> "Available".equalsIgnoreCase(d.getAvailability()))
+                .count();
+
+        boolean hasActiveRequest = navigation.getActiveRequest() != null;
+        int activeRequests = hasActiveRequest ? 1 : 0;
+        int criticalRequests = (hasActiveRequest && "CRITICAL".equalsIgnoreCase(navigation.getActiveRequest().getUrgency())) ? 1 : 0;
+
+        // 1. Metric Summary Cards Row (4 Cards)
         GridPane metricsGrid = new GridPane();
-        metricsGrid.setHgap(20);
-        metricsGrid.setVgap(20);
+        metricsGrid.setHgap(16);
+        metricsGrid.setVgap(16);
 
-        int totalDonors = 125;
-        int availDonors = 82;
-
-        VBox card1 = createMetricCard("Registered Donors", String.valueOf(totalDonors), "Active in database");
-        VBox card2 = createMetricCard("Available Donors", String.valueOf(availDonors), "Ready for emergency response");
-        VBox card3 = createMetricCard("Active Requests", "4", "Pending fulfillment");
-        VBox card4 = createMetricCard("Critical Requests", "2", "Requires immediate match");
+        VBox card1 = createMetricCard("Registered Donors", String.valueOf(totalDonors), "Total in system", "blue", "metric-value-text");
+        VBox card2 = createMetricCard("Available Donors", String.valueOf(availableDonors), "Ready to respond", "green", "metric-value-green");
+        VBox card3 = createMetricCard("Active Requests", String.valueOf(activeRequests), "Awaiting match", "orange", "metric-value-orange");
+        VBox card4 = createMetricCard("Critical Requests", String.valueOf(criticalRequests), "Immediate need", "red", "metric-value-red");
 
         metricsGrid.add(card1, 0, 0);
         metricsGrid.add(card2, 1, 0);
@@ -43,81 +56,198 @@ public class DashboardView {
         col.setPercentWidth(25);
         metricsGrid.getColumnConstraints().addAll(col, col, col, col);
 
-        // 2. Quick Action Buttons Panel
-        Label actionsTitle = new Label("Quick Actions");
-        actionsTitle.getStyleClass().add("card-title");
-        actionsTitle.setStyle("-fx-font-size: 16px; -fx-text-fill: #ffffff;");
+        // 2. Middle Grid (Quick Actions & Emergency Readiness)
+        GridPane middleGrid = new GridPane();
+        middleGrid.setHgap(20);
+        middleGrid.setVgap(20);
 
-        Button btnEmergency = new Button("Emergency Request");
-        btnEmergency.getStyleClass().add("btn-primary");
+        // Left Column: Quick Actions
+        VBox quickActionsBox = new VBox(12);
+        quickActionsBox.getStyleClass().add("card-panel");
+
+        Label actionsTitle = new Label("QUICK ACTIONS");
+        actionsTitle.getStyleClass().add("card-title-muted");
+
+        Button btnEmergency = new Button("⚠   Create Emergency Request");
+        btnEmergency.getStyleClass().add("btn-danger-primary");
         btnEmergency.setMaxWidth(Double.MAX_VALUE);
         btnEmergency.setOnAction(e -> navigation.showEmergencyRequest());
 
-        Button btnRegister = new Button("Register Donor");
-        btnRegister.getStyleClass().add("btn-secondary");
+        Button btnRegister = new Button("+   Register New Donor");
+        btnRegister.getStyleClass().add("btn-blue-primary");
         btnRegister.setMaxWidth(Double.MAX_VALUE);
         btnRegister.setOnAction(e -> navigation.showDonorRegistration());
 
-        Button btnManagement = new Button("Donor Management");
-        btnManagement.getStyleClass().add("btn-secondary");
+        Button btnManagement = new Button("≡   Manage Donor Records");
+        btnManagement.getStyleClass().add("btn-dark-action");
         btnManagement.setMaxWidth(Double.MAX_VALUE);
         btnManagement.setOnAction(e -> navigation.showDonorManagement());
 
-        Button btnResults = new Button("Matching Results");
-        btnResults.getStyleClass().add("btn-secondary");
+        Button btnResults = new Button("◎   View Matching Results");
+        btnResults.getStyleClass().add("btn-dark-action");
         btnResults.setMaxWidth(Double.MAX_VALUE);
         btnResults.setOnAction(e -> navigation.showMatchingResults());
 
-        GridPane actionGrid = new GridPane();
-        actionGrid.setHgap(15);
-        actionGrid.setVgap(15);
-        actionGrid.add(btnEmergency, 0, 0);
-        actionGrid.add(btnRegister, 1, 0);
-        actionGrid.add(btnManagement, 2, 0);
-        actionGrid.add(btnResults, 3, 0);
-        
-        ColumnConstraints actCol = new ColumnConstraints();
-        actCol.setPercentWidth(25);
-        actionGrid.getColumnConstraints().addAll(actCol, actCol, actCol, actCol);
+        quickActionsBox.getChildren().addAll(actionsTitle, btnEmergency, btnRegister, btnManagement, btnResults);
 
-        VBox actionsPanel = new VBox(15, actionsTitle, actionGrid);
-        actionsPanel.getStyleClass().add("card-panel");
+        // Right Column: Emergency Readiness
+        VBox readinessBox = new VBox(14);
+        readinessBox.getStyleClass().add("card-panel");
 
-        // 3. System Status / Overview Banner
-        VBox banner = new VBox(8);
-        banner.getStyleClass().add("card-panel");
-        banner.setStyle("-fx-background-color: #1e293b; -fx-border-color: #ef4444; -fx-border-width: 0 0 0 4px;");
+        Label readinessTitle = new Label("EMERGENCY READINESS");
+        readinessTitle.getStyleClass().add("card-title-muted");
 
-        Label bannerTitle = new Label("Emergency Readiness System Active");
-        bannerTitle.setStyle("-fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 15px;");
+        int ratePct = totalDonors > 0 ? (int) Math.round(((double) availableDonors / totalDonors) * 100) : 0;
+        Label rateLabel = new Label("Availability Rate");
+        rateLabel.setStyle("-fx-text-fill: #475569; -fx-font-size: 13px; -fx-font-weight: bold;");
 
-        Label bannerDesc = new Label(
-            "System is ready to take emergency blood requests, match compatible donors, and prioritize response. " +
-            "Select an action above or navigate using the sidebar menu."
-        );
-        bannerDesc.setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 13px;");
-        bannerDesc.setWrapText(true);
+        Label ratePctLabel = new Label(ratePct + "%");
+        ratePctLabel.setStyle("-fx-text-fill: #16a34a; -fx-font-size: 20px; -fx-font-weight: bold;");
 
-        banner.getChildren().addAll(bannerTitle, bannerDesc);
+        BorderPane rateHeader = new BorderPane();
+        rateHeader.setLeft(rateLabel);
+        rateHeader.setRight(ratePctLabel);
 
-        root.getChildren().addAll(metricsGrid, actionsPanel, banner);
+        ProgressBar progressBar = new ProgressBar((double) ratePct / 100.0);
+        progressBar.setMaxWidth(Double.MAX_VALUE);
+        progressBar.getStyleClass().add("readiness-progress");
+
+        Label stockTitle = new Label("BLOOD GROUP STOCK");
+        stockTitle.getStyleClass().add("card-title-muted");
+
+        // Blood Group Stock Grid (8 boxes)
+        Map<String, Integer> stockMap = calculateStockMap();
+        GridPane stockGrid = new GridPane();
+        stockGrid.setHgap(10);
+        stockGrid.setVgap(10);
+
+        String[] groups = {"0+", "0-", "A+", "A-", "B+", "B-", "AB+", "AB-"};
+        for (int i = 0; i < groups.length; i++) {
+            String grp = groups[i];
+            int count = stockMap.getOrDefault(grp, 0);
+
+            VBox sBox = new VBox(2);
+            sBox.getStyleClass().add("stock-box");
+            if (count > 0) {
+                sBox.getStyleClass().add("stock-box-active");
+            }
+
+            Label lblGrp = new Label(grp);
+            lblGrp.getStyleClass().add("stock-group-text");
+
+            Label lblCnt = new Label(String.valueOf(count));
+            lblCnt.getStyleClass().add("stock-count-text");
+
+            sBox.getChildren().addAll(lblGrp, lblCnt);
+
+            int rowIdx = i / 4;
+            int colIdx = i % 4;
+            stockGrid.add(sBox, colIdx, rowIdx);
+        }
+
+        ColumnConstraints sCol = new ColumnConstraints();
+        sCol.setPercentWidth(25);
+        stockGrid.getColumnConstraints().addAll(sCol, sCol, sCol, sCol);
+
+        readinessBox.getChildren().addAll(readinessTitle, rateHeader, progressBar, stockTitle, stockGrid);
+
+        middleGrid.add(quickActionsBox, 0, 0);
+        middleGrid.add(readinessBox, 1, 0);
+
+        ColumnConstraints midCol = new ColumnConstraints();
+        midCol.setPercentWidth(50);
+        middleGrid.getColumnConstraints().addAll(midCol, midCol);
+
+        // 3. Bottom Recent Donors Table
+        VBox recentPanel = new VBox(12);
+        recentPanel.getStyleClass().add("card-panel");
+
+        Label recentTitle = new Label("RECENT DONORS");
+        recentTitle.getStyleClass().add("card-title-muted");
+
+        GridPane tableHeader = new GridPane();
+        tableHeader.setHgap(10);
+        tableHeader.setPadding(new Insets(0, 0, 6, 0));
+
+        Label thName = new Label("NAME"); thName.getStyleClass().add("card-title-muted");
+        Label thGroup = new Label("BLOOD GROUP"); thGroup.getStyleClass().add("card-title-muted");
+        Label thLoc = new Label("LOCATION"); thLoc.getStyleClass().add("card-title-muted");
+        Label thStat = new Label("STATUS"); thStat.getStyleClass().add("card-title-muted");
+
+        tableHeader.add(thName, 0, 0);
+        tableHeader.add(thGroup, 1, 0);
+        tableHeader.add(thLoc, 2, 0);
+        tableHeader.add(thStat, 3, 0);
+
+        ColumnConstraints tc1 = new ColumnConstraints(); tc1.setPercentWidth(30);
+        ColumnConstraints tc2 = new ColumnConstraints(); tc2.setPercentWidth(20);
+        ColumnConstraints tc3 = new ColumnConstraints(); tc3.setPercentWidth(30);
+        ColumnConstraints tc4 = new ColumnConstraints(); tc4.setPercentWidth(20);
+        tableHeader.getColumnConstraints().addAll(tc1, tc2, tc3, tc4);
+
+        VBox donorRows = new VBox(8);
+
+        int maxRows = Math.min(3, navigation.getSharedDonorList().size());
+        for (int i = 0; i < maxRows; i++) {
+            Donor d = navigation.getSharedDonorList().get(i);
+
+            GridPane row = new GridPane();
+            row.setHgap(10);
+            row.setPadding(new Insets(6, 0, 6, 0));
+
+            Label lblName = new Label(d.getName());
+            lblName.setStyle("-fx-text-fill: #0f172a; -fx-font-weight: bold; -fx-font-size: 13px;");
+
+            Label lblGroup = new Label(d.getBloodGroup());
+            lblGroup.getStyleClass().add("blood-badge");
+
+            Label lblLoc = new Label(d.getLocation());
+            lblLoc.setStyle("-fx-text-fill: #64748b; -fx-font-size: 13px;");
+
+            boolean isAvail = "Available".equalsIgnoreCase(d.getAvailability());
+            Label lblStatus = new Label(d.getAvailability());
+            lblStatus.getStyleClass().add(isAvail ? "status-badge-available" : "status-badge-unavailable");
+
+            row.add(lblName, 0, 0);
+            row.add(lblGroup, 1, 0);
+            row.add(lblLoc, 2, 0);
+            row.add(lblStatus, 3, 0);
+
+            row.getColumnConstraints().addAll(tc1, tc2, tc3, tc4);
+            donorRows.getChildren().add(row);
+        }
+
+        recentPanel.getChildren().addAll(recentTitle, tableHeader, donorRows);
+
+        root.getChildren().addAll(metricsGrid, middleGrid, recentPanel);
     }
 
-    private VBox createMetricCard(String title, String value, String subtitle) {
-        VBox card = new VBox(8);
-        card.getStyleClass().add("card-panel");
-
-        Label lblTitle = new Label(title);
-        lblTitle.getStyleClass().add("card-title");
+    private VBox createMetricCard(String title, String value, String subtitle, String colorClass, String valueClass) {
+        VBox card = new VBox(6);
+        card.getStyleClass().addAll("metric-card", "metric-card-" + colorClass);
 
         Label lblValue = new Label(value);
-        lblValue.getStyleClass().add("card-value");
+        lblValue.getStyleClass().add(valueClass);
+
+        Label lblTitle = new Label(title);
+        lblTitle.getStyleClass().add("card-title-muted");
 
         Label lblSub = new Label(subtitle);
-        lblSub.getStyleClass().add("card-subtitle");
+        lblSub.getStyleClass().add("metric-subtext");
 
-        card.getChildren().addAll(lblTitle, lblValue, lblSub);
+        card.getChildren().addAll(lblValue, lblTitle, lblSub);
         return card;
+    }
+
+    private Map<String, Integer> calculateStockMap() {
+        Map<String, Integer> map = new HashMap<>();
+        for (Donor d : navigation.getSharedDonorList()) {
+            if ("Available".equalsIgnoreCase(d.getAvailability())) {
+                String bg = d.getBloodGroup();
+                map.put(bg, map.getOrDefault(bg, 0) + 1);
+            }
+        }
+        return map;
     }
 
     public Node getView() {

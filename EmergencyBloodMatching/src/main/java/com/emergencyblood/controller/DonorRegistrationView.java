@@ -3,18 +3,20 @@ package com.emergencyblood.controller;
 import com.emergencyblood.model.Donor;
 import com.emergencyblood.util.AlertUtil;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 /**
- * Screen 3: Donor Registration Form
+ * Screen 3: Donor Registration Form with 2-Column Grid and Segmented Availability Toggle.
  */
 public class DonorRegistrationView {
 
     private final NavigationController navigation;
     private final VBox root;
+    private String selectedAvailability = "Available";
 
     public DonorRegistrationView(NavigationController navigation) {
         this.navigation = navigation;
@@ -22,93 +24,126 @@ public class DonorRegistrationView {
         root = new VBox(20);
         root.setAlignment(Pos.TOP_LEFT);
 
-        VBox formPanel = new VBox(20);
+        VBox formPanel = new VBox(18);
         formPanel.getStyleClass().add("card-panel");
-        formPanel.setMaxWidth(650);
+        formPanel.setMaxWidth(680);
 
-        Label header = new Label("Register Voluntary Blood Donor");
-        header.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 18px; -fx-font-weight: bold;");
+        Label sectionTitle = new Label("DONOR INFORMATION");
+        sectionTitle.getStyleClass().add("card-title-muted");
 
-        GridPane grid = new GridPane();
-        grid.setHgap(15);
-        grid.setVgap(15);
+        VBox formFields = new VBox(16);
 
-        // Name
-        Label lblName = new Label("Full Name:");
+        // Full Name
+        Label lblName = new Label("FULL NAME *");
         lblName.getStyleClass().add("form-label");
         TextField txtName = new TextField();
-        txtName.setPromptText("e.g., Rahul Sharma");
+        txtName.setPromptText("e.g. Rahul Sharma");
 
-        // Age
-        Label lblAge = new Label("Age (18-65):");
+        // Row 1: Age & Blood Group (2 columns)
+        GridPane row1 = new GridPane();
+        row1.setHgap(16);
+        row1.setVgap(16);
+
+        Label lblAge = new Label("AGE (18-65) *");
         lblAge.getStyleClass().add("form-label");
         TextField txtAge = new TextField();
-        txtAge.setPromptText("e.g., 22");
+        txtAge.setPromptText("e.g. 22");
 
-        // Blood Group
-        Label lblBloodGroup = new Label("Blood Group:");
+        Label lblBloodGroup = new Label("BLOOD GROUP *");
         lblBloodGroup.getStyleClass().add("form-label");
         ComboBox<String> comboBloodGroup = new ComboBox<>(FXCollections.observableArrayList(
             "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
         ));
-        comboBloodGroup.setPromptText("Select Blood Group");
+        comboBloodGroup.setPromptText("Select group");
         comboBloodGroup.setMaxWidth(Double.MAX_VALUE);
 
-        // Phone Number
-        Label lblPhone = new Label("Phone Number:");
+        VBox ageBox = new VBox(6, lblAge, txtAge);
+        VBox bgBox = new VBox(6, lblBloodGroup, comboBloodGroup);
+
+        row1.add(ageBox, 0, 0);
+        row1.add(bgBox, 1, 0);
+
+        ColumnConstraints col1 = new ColumnConstraints(); col1.setPercentWidth(50);
+        ColumnConstraints col2 = new ColumnConstraints(); col2.setPercentWidth(50);
+        row1.getColumnConstraints().addAll(col1, col2);
+
+        // Row 2: Phone & Location (2 columns)
+        GridPane row2 = new GridPane();
+        row2.setHgap(16);
+        row2.setVgap(16);
+
+        Label lblPhone = new Label("PHONE NUMBER *");
         lblPhone.getStyleClass().add("form-label");
         TextField txtPhone = new TextField();
-        txtPhone.setPromptText("e.g., 9876543210");
+        txtPhone.setPromptText("e.g. 9876543210");
 
-        // Location
-        Label lblLocation = new Label("City / Location:");
+        Label lblLocation = new Label("CITY / LOCATION *");
         lblLocation.getStyleClass().add("form-label");
         TextField txtLocation = new TextField();
-        txtLocation.setPromptText("e.g., Vijayawada");
+        txtLocation.setPromptText("e.g. Vijayawada");
 
-        // Availability Status
-        Label lblAvailability = new Label("Availability Status:");
+        VBox phoneBox = new VBox(6, lblPhone, txtPhone);
+        VBox locBox = new VBox(6, lblLocation, txtLocation);
+
+        row2.add(phoneBox, 0, 0);
+        row2.add(locBox, 1, 0);
+        row2.getColumnConstraints().addAll(col1, col2);
+
+        // Availability Segmented Buttons
+        Label lblAvailability = new Label("AVAILABILITY STATUS");
         lblAvailability.getStyleClass().add("form-label");
-        ComboBox<String> comboAvailability = new ComboBox<>(FXCollections.observableArrayList(
-            "Available", "Unavailable"
-        ));
-        comboAvailability.setValue("Available");
-        comboAvailability.setMaxWidth(Double.MAX_VALUE);
 
-        grid.add(lblName, 0, 0);
-        grid.add(txtName, 1, 0);
+        Button btnAvailable = new Button("Available");
+        btnAvailable.getStyleClass().addAll("segmented-btn", "segmented-btn-left", "segmented-active-green");
 
-        grid.add(lblAge, 0, 1);
-        grid.add(txtAge, 1, 1);
+        Button btnUnavailable = new Button("Unavailable");
+        btnUnavailable.getStyleClass().addAll("segmented-btn", "segmented-btn-right");
 
-        grid.add(lblBloodGroup, 0, 2);
-        grid.add(comboBloodGroup, 1, 2);
+        btnAvailable.setOnAction(e -> {
+            selectedAvailability = "Available";
+            btnAvailable.getStyleClass().add("segmented-active-green");
+            btnUnavailable.getStyleClass().remove("segmented-active-green");
+        });
 
-        grid.add(lblPhone, 0, 3);
-        grid.add(txtPhone, 1, 3);
+        btnUnavailable.setOnAction(e -> {
+            selectedAvailability = "Unavailable";
+            btnUnavailable.getStyleClass().add("segmented-active-green");
+            btnAvailable.getStyleClass().remove("segmented-active-green");
+        });
 
-        grid.add(lblLocation, 0, 4);
-        grid.add(txtLocation, 1, 4);
+        HBox availGroup = new HBox(btnAvailable, btnUnavailable);
+        btnAvailable.setPrefWidth(220);
+        btnUnavailable.setPrefWidth(220);
 
-        grid.add(lblAvailability, 0, 5);
-        grid.add(comboAvailability, 1, 5);
+        formFields.getChildren().addAll(
+            lblName, txtName,
+            row1,
+            row2,
+            lblAvailability, availGroup
+        );
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(40);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(60);
-        grid.getColumnConstraints().addAll(col1, col2);
+        // Action Buttons
+        Button btnClear = new Button("Clear");
+        btnClear.getStyleClass().add("btn-dark-action");
+        btnClear.setOnAction(e -> {
+            txtName.clear();
+            txtAge.clear();
+            comboBloodGroup.setValue(null);
+            txtPhone.clear();
+            txtLocation.clear();
+            selectedAvailability = "Available";
+            btnAvailable.getStyleClass().add("segmented-active-green");
+            btnUnavailable.getStyleClass().remove("segmented-active-green");
+        });
 
-        // Buttons
-        Button btnRegister = new Button("REGISTER DONOR");
-        btnRegister.getStyleClass().add("btn-primary");
+        Button btnRegister = new Button("+   Register Donor");
+        btnRegister.getStyleClass().add("btn-blue-primary");
         btnRegister.setOnAction(e -> {
             String name = txtName.getText().trim();
             String ageStr = txtAge.getText().trim();
             String group = comboBloodGroup.getValue();
             String phone = txtPhone.getText().trim();
             String location = txtLocation.getText().trim();
-            String availability = comboAvailability.getValue();
 
             if (name.isEmpty()) {
                 AlertUtil.showError("Validation Error", "Missing Name", "Please enter the donor's full name.");
@@ -147,9 +182,8 @@ public class DonorRegistrationView {
                 return;
             }
 
-            // Create Donor & Add to Shared List
             int newId = navigation.getSharedDonorList().size() + 1;
-            Donor donor = new Donor(newId, name, group, age, phone, location, availability);
+            Donor donor = new Donor(newId, name, group, age, phone, location, selectedAvailability);
             navigation.getSharedDonorList().add(donor);
 
             AlertUtil.showInfo(
@@ -164,24 +198,16 @@ public class DonorRegistrationView {
             comboBloodGroup.setValue(null);
             txtPhone.clear();
             txtLocation.clear();
-            comboAvailability.setValue("Available");
+            selectedAvailability = "Available";
+            btnAvailable.getStyleClass().add("segmented-active-green");
+            btnUnavailable.getStyleClass().remove("segmented-active-green");
         });
 
-        Button btnClear = new Button("CLEAR");
-        btnClear.getStyleClass().add("btn-secondary");
-        btnClear.setOnAction(e -> {
-            txtName.clear();
-            txtAge.clear();
-            comboBloodGroup.setValue(null);
-            txtPhone.clear();
-            txtLocation.clear();
-            comboAvailability.setValue("Available");
-        });
-
-        HBox btnBox = new HBox(15, btnClear, btnRegister);
+        HBox btnBox = new HBox(12, btnClear, btnRegister);
         btnBox.setAlignment(Pos.CENTER_RIGHT);
+        btnBox.setPadding(new Insets(10, 0, 0, 0));
 
-        formPanel.getChildren().addAll(header, grid, new Separator(), btnBox);
+        formPanel.getChildren().addAll(sectionTitle, formFields, btnBox);
         root.getChildren().add(formPanel);
     }
 

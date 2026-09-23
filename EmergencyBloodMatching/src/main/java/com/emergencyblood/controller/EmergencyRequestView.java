@@ -10,12 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 /**
- * Screen 2: Emergency Blood Request Form
+ * Screen 2: Emergency Blood Request Form with Light Premium White Theme.
  */
 public class EmergencyRequestView {
 
     private final NavigationController navigation;
     private final VBox root;
+    private String selectedUrgency = "CRITICAL";
 
     public EmergencyRequestView(NavigationController navigation) {
         this.navigation = navigation;
@@ -23,77 +24,99 @@ public class EmergencyRequestView {
         root = new VBox(20);
         root.setAlignment(Pos.TOP_LEFT);
 
-        VBox formPanel = new VBox(20);
+        // 1. Top Emergency Alert Banner
+        HBox banner = new HBox(10);
+        banner.setStyle("-fx-background-color: #fef2f2; -fx-border-color: #fca5a5; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 14px 18px;");
+        banner.setAlignment(Pos.CENTER_LEFT);
+
+        Label bannerText = new Label("⚠   Immediate response required — all compatible donors alerted");
+        bannerText.setStyle("-fx-text-fill: #b91c1c; -fx-font-weight: bold; -fx-font-size: 13px;");
+        banner.getChildren().add(bannerText);
+
+        // 2. Request Details Card Panel
+        VBox formPanel = new VBox(18);
         formPanel.getStyleClass().add("card-panel");
-        formPanel.setMaxWidth(650);
+        formPanel.setMaxWidth(680);
 
-        Label header = new Label("Create Emergency Blood Request");
-        header.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 18px; -fx-font-weight: bold;");
+        Label sectionTitle = new Label("REQUEST DETAILS");
+        sectionTitle.getStyleClass().add("card-title-muted");
 
-        GridPane grid = new GridPane();
-        grid.setHgap(15);
-        grid.setVgap(15);
+        VBox formFields = new VBox(16);
 
-        // Required Blood Group Dropdown
-        Label lblBloodGroup = new Label("Required Blood Group:");
+        // Required Blood Group
+        Label lblBloodGroup = new Label("REQUIRED BLOOD GROUP *");
         lblBloodGroup.getStyleClass().add("form-label");
 
         ComboBox<String> comboBloodGroup = new ComboBox<>(FXCollections.observableArrayList(
             "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
         ));
-        comboBloodGroup.setPromptText("Select Blood Group");
+        comboBloodGroup.setPromptText("Select blood group");
         comboBloodGroup.setMaxWidth(Double.MAX_VALUE);
 
-        // Units Required Input
-        Label lblUnits = new Label("Units Required:");
+        // Units Required
+        Label lblUnits = new Label("UNITS REQUIRED *");
         lblUnits.getStyleClass().add("form-label");
 
         TextField txtUnits = new TextField();
-        txtUnits.setPromptText("e.g., 2");
+        txtUnits.setPromptText("e.g. 2");
 
-        // Location Input
-        Label lblLocation = new Label("Hospital / Emergency Location:");
+        // Hospital / Location
+        Label lblLocation = new Label("HOSPITAL / EMERGENCY LOCATION *");
         lblLocation.getStyleClass().add("form-label");
 
         TextField txtLocation = new TextField();
-        txtLocation.setPromptText("e.g., Vijayawada");
+        txtLocation.setPromptText("e.g. Vijayawada Government Hospital");
 
-        // Urgency Level Dropdown
-        Label lblUrgency = new Label("Urgency Level:");
+        // Urgency Level Segmented Buttons
+        Label lblUrgency = new Label("URGENCY LEVEL");
         lblUrgency.getStyleClass().add("form-label");
 
-        ComboBox<String> comboUrgency = new ComboBox<>(FXCollections.observableArrayList(
-            "LOW", "MEDIUM", "CRITICAL"
-        ));
-        comboUrgency.setValue("CRITICAL");
-        comboUrgency.setMaxWidth(Double.MAX_VALUE);
+        Button btnCritical = new Button("CRITICAL");
+        btnCritical.getStyleClass().addAll("segmented-btn", "segmented-btn-left", "segmented-active-red");
 
-        grid.add(lblBloodGroup, 0, 0);
-        grid.add(comboBloodGroup, 1, 0);
+        Button btnHigh = new Button("HIGH");
+        btnHigh.getStyleClass().addAll("segmented-btn", "segmented-btn-middle");
 
-        grid.add(lblUnits, 0, 1);
-        grid.add(txtUnits, 1, 1);
+        Button btnMedium = new Button("MEDIUM");
+        btnMedium.getStyleClass().addAll("segmented-btn", "segmented-btn-right");
 
-        grid.add(lblLocation, 0, 2);
-        grid.add(txtLocation, 1, 2);
+        btnCritical.setOnAction(e -> {
+            selectedUrgency = "CRITICAL";
+            btnCritical.getStyleClass().add("segmented-active-red");
+            btnHigh.getStyleClass().remove("segmented-active-red");
+            btnMedium.getStyleClass().remove("segmented-active-red");
+        });
 
-        grid.add(lblUrgency, 0, 3);
-        grid.add(comboUrgency, 1, 3);
+        btnHigh.setOnAction(e -> {
+            selectedUrgency = "HIGH";
+            btnHigh.getStyleClass().add("segmented-active-red");
+            btnCritical.getStyleClass().remove("segmented-active-red");
+            btnMedium.getStyleClass().remove("segmented-active-red");
+        });
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(40);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(60);
-        grid.getColumnConstraints().addAll(col1, col2);
+        btnMedium.setOnAction(e -> {
+            selectedUrgency = "MEDIUM";
+            btnMedium.getStyleClass().add("segmented-active-red");
+            btnCritical.getStyleClass().remove("segmented-active-red");
+            btnHigh.getStyleClass().remove("segmented-active-red");
+        });
 
-        // Action Buttons
-        Button btnFindDonors = new Button("FIND DONORS");
-        btnFindDonors.getStyleClass().add("btn-primary");
+        HBox urgencyGroup = new HBox(btnCritical, btnHigh, btnMedium);
+
+        formFields.getChildren().addAll(
+            lblBloodGroup, comboBloodGroup,
+            lblUnits, txtUnits,
+            lblLocation, txtLocation,
+            lblUrgency, urgencyGroup
+        );
+
+        // Submit Button
+        Button btnFindDonors = new Button("◎   Find Matching Donors");
+        btnFindDonors.getStyleClass().add("btn-danger-primary");
         btnFindDonors.setOnAction(e -> {
             String group = comboBloodGroup.getValue();
             String unitsStr = txtUnits.getText().trim();
             String location = txtLocation.getText().trim();
-            String urgency = comboUrgency.getValue();
 
             if (group == null || group.isEmpty()) {
                 AlertUtil.showError("Validation Error", "Missing Blood Group", "Please select a required blood group.");
@@ -123,7 +146,7 @@ public class EmergencyRequestView {
             }
 
             // Save Active Request & Navigate
-            BloodRequest newRequest = new BloodRequest(102, group, units, location, urgency);
+            BloodRequest newRequest = new BloodRequest(102, group, units, location, selectedUrgency);
             navigation.setActiveRequest(newRequest);
 
             AlertUtil.showInfo(
@@ -135,11 +158,27 @@ public class EmergencyRequestView {
             navigation.showMatchingResults();
         });
 
-        HBox btnBox = new HBox(15, btnFindDonors);
-        btnBox.setAlignment(Pos.CENTER_RIGHT);
+        HBox actionBox = new HBox(btnFindDonors);
+        actionBox.setAlignment(Pos.CENTER_RIGHT);
+        actionBox.setPadding(new Insets(10, 0, 0, 0));
 
-        formPanel.getChildren().addAll(header, grid, new Separator(), btnBox);
-        root.getChildren().add(formPanel);
+        formPanel.getChildren().addAll(sectionTitle, formFields, actionBox);
+
+        // 3. Footer Algorithm Info Card
+        VBox infoCard = new VBox(8);
+        infoCard.setMaxWidth(680);
+        infoCard.setStyle("-fx-background-color: #f8fafc; -fx-border-color: #e2e8f0; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 14px 18px;");
+
+        Label infoText = new Label(
+            "Matching algorithm: Donors are ranked by blood compatibility, geographic proximity, current availability, " +
+            "and historical response rate. O- universal donors are included for critical requests."
+        );
+        infoText.setStyle("-fx-text-fill: #64748b; -fx-font-size: 12px;");
+        infoText.setWrapText(true);
+
+        infoCard.getChildren().add(infoText);
+
+        root.getChildren().addAll(banner, formPanel, infoCard);
     }
 
     public Node getView() {
