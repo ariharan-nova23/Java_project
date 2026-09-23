@@ -1,0 +1,233 @@
+/* Emergency Blood Matching System - Medical Dark Theme */
+
+.root {
+    -fx-font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    -fx-base: #0f172a;
+    -fx-background: #0f172a;
+    -fx-focus-color: #ef4444;
+    -fx-faint-focus-color: #ef444433;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 1px 0 0;
+    -fx-padding: 20px 10px;
+}
+
+.sidebar-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 14px;
+    -fx-padding: 12px 16px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: #334155;
+    -fx-text-fill: #ffffff;
+}
+
+.nav-button-active {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+}
+
+/* Header Bar */
+.header-bar {
+    -fx-background-color: #1e293b;
+    -fx-padding: 15px 30px;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.page-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+}
+
+/* Card Containers */
+.card-panel {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12px;
+    -fx-border-color: #334155;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 20px;
+}
+
+.card-title {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.card-value {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.card-subtitle {
+    -fx-text-fill: #ef4444;
+    -fx-font-size: 12px;
+}
+
+/* Buttons */
+.btn-primary {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #b91c1c;
+}
+
+.btn-secondary {
+    -fx-background-color: #475569;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #334155;
+}
+
+.btn-danger {
+    -fx-background-color: #991b1b;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+/* Form Controls */
+.text-input, .combo-box {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #475569;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.text-input:focused, .combo-box:focused {
+    -fx-border-color: #ef4444;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #1e293b;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #dc2626;
+}
+
+.form-label {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* TableView Styling */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1e293b;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #1e293b;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #1e293b;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #334155;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: #ffffff;
+}
+
+.table-cell {
+    -fx-text-fill: #e2e8f0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 13px;
+}
+
+/* Status Badges */
+.status-badge-available {
+    -fx-background-color: #166534;
+    -fx-text-fill: #4ade80;
+    -fx-padding: 4px 10px;
+    -fx-background-radius: 12px;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.status-badge-unavailable {
+    -fx-background-color: #991b1b;
+    -fx-text-fill: #fca5a5;
+    -fx-padding: 4px 10px;
+    -fx-background-radius: 12px;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
