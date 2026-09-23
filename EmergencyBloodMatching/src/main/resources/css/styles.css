@@ -1,27 +1,27 @@
 /* ==========================================================================
-   Emergency Blood Matching System - Premium Beige Theme (#F5F5DC)
+   Emergency Blood Matching System - Modern Executive Light Mode (#FBFBFD)
    ========================================================================== */
 
 .root {
-    -fx-font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
-    -fx-base: #F5F5DC;
-    -fx-background: #F5F5DC;
-    -fx-focus-color: #D92525;
-    -fx-faint-focus-color: #D9252533;
+    -fx-font-family: 'Segoe UI', Inter, system-ui, Helvetica, Arial, sans-serif;
+    -fx-base: #FBFBFD;
+    -fx-background: #FBFBFD;
+    -fx-focus-color: #DC2626;
+    -fx-faint-focus-color: #DC262633;
 }
 
 /* --------------------------------------------------------------------------
-   Sidebar Styling (Clean Warm White / Beige)
+   Sidebar Styling (Crisp White with Delicate Border)
    -------------------------------------------------------------------------- */
 .sidebar {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #E8E4D5;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
     -fx-border-width: 0 1px 0 0;
     -fx-padding: 22px 14px;
 }
 
 .brand-icon-box {
-    -fx-background-color: #D92525;
+    -fx-background-color: #DC2626;
     -fx-background-radius: 10px;
     -fx-min-width: 38px;
     -fx-min-height: 38px;
@@ -31,18 +31,18 @@
 }
 
 .sidebar-title {
-    -fx-text-fill: #2A2723;
+    -fx-text-fill: #111827;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
 .sidebar-subtitle {
-    -fx-text-fill: #78726A;
+    -fx-text-fill: #6B7280;
     -fx-font-size: 11px;
 }
 
 .sidebar-section-header {
-    -fx-text-fill: #9E978D;
+    -fx-text-fill: #9CA3AF;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 1px;
@@ -51,7 +51,7 @@
 
 .nav-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #5C564E;
+    -fx-text-fill: #4B5563;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-padding: 11px 14px;
@@ -61,37 +61,40 @@
 }
 
 .nav-button:hover {
-    -fx-background-color: #F5F2E6;
-    -fx-text-fill: #2A2723;
+    -fx-background-color: #F3F4F6;
+    -fx-text-fill: #111827;
 }
 
+/* Active Sidebar Button with Red Left Vertical Indicator Bar */
 .nav-button-active {
-    -fx-background-color: #D92525;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #DC2626;
     -fx-font-weight: bold;
-    -fx-background-radius: 8px;
+    -fx-border-color: #DC2626;
+    -fx-border-width: 0 0 0 4px;
+    -fx-background-radius: 0 8px 8px 0;
 }
 
 .sidebar-status-card {
-    -fx-background-color: #FAF8F3;
-    -fx-border-color: #E8E4D5;
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #E5E7EB;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
     -fx-padding: 12px;
 }
 
 .status-dot-green {
-    -fx-fill: #15803D;
+    -fx-fill: #10B981;
 }
 
 .sidebar-status-title {
-    -fx-text-fill: #15803D;
+    -fx-text-fill: #10B981;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
 .sidebar-status-desc {
-    -fx-text-fill: #78726A;
+    -fx-text-fill: #6B7280;
     -fx-font-size: 11px;
 }
 
@@ -99,103 +102,103 @@
    Header Bar Styling
    -------------------------------------------------------------------------- */
 .header-bar {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #FFFFFF;
     -fx-padding: 20px 30px 14px 30px;
-    -fx-border-color: #E8E4D5;
+    -fx-border-color: #E5E7EB;
     -fx-border-width: 0 0 1px 0;
 }
 
 .page-title {
-    -fx-text-fill: #2A2723;
+    -fx-text-fill: #111827;
     -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
 
 .page-subtitle {
-    -fx-text-fill: #78726A;
+    -fx-text-fill: #6B7280;
     -fx-font-size: 13px;
 }
 
 .header-status-pill {
-    -fx-background-color: #E6F7EC;
-    -fx-border-color: #86EFAC;
+    -fx-background-color: #ECFDF5;
+    -fx-border-color: #A7F3D0;
     -fx-border-radius: 16px;
     -fx-background-radius: 16px;
-    -fx-padding: 4px 14px;
+    -fx-padding: 5px 14px;
 }
 
 .header-status-pill-text {
-    -fx-text-fill: #15803D;
+    -fx-text-fill: #10B981;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
 }
 
 /* --------------------------------------------------------------------------
-   Cards & Content Panels (Warm White Cards on Beige Background)
+   Cards & Content Panels (Executive Light Surfaces with Soft Drop Shadows)
    -------------------------------------------------------------------------- */
 .card-panel {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 12px;
-    -fx-border-color: #E8E4D5;
-    -fx-border-radius: 12px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 14px;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
-    -fx-padding: 20px;
-    -fx-effect: dropshadow(gaussian, rgba(100, 90, 60, 0.05), 8, 0, 0, 2);
+    -fx-padding: 22px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 10, 0, 0, 2);
 }
 
 .metric-card {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 12px;
-    -fx-border-color: #E8E4D5;
-    -fx-border-radius: 12px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 14px;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
-    -fx-padding: 18px 20px;
-    -fx-effect: dropshadow(gaussian, rgba(100, 90, 60, 0.05), 8, 0, 0, 2);
+    -fx-padding: 20px 22px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 10, 0, 0, 2);
 }
 
 .metric-card-blue {
-    -fx-border-color: #1D5BD8;
+    -fx-border-color: #2563EB;
 }
 
 .metric-card-green {
-    -fx-border-color: #15803D;
+    -fx-border-color: #10B981;
 }
 
 .metric-card-orange {
-    -fx-border-color: #D97706;
+    -fx-border-color: #F59E0B;
 }
 
 .metric-card-red {
-    -fx-border-color: #D92525;
+    -fx-border-color: #DC2626;
 }
 
 .card-title-muted {
-    -fx-text-fill: #78726A;
+    -fx-text-fill: #6B7280;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 0.5px;
 }
 
 .metric-value-text {
-    -fx-text-fill: #1D5BD8;
-    -fx-font-size: 36px;
+    -fx-text-fill: #111827;
+    -fx-font-size: 38px;
     -fx-font-weight: bold;
 }
 
 .metric-value-green {
-    -fx-text-fill: #15803D;
+    -fx-text-fill: #10B981;
 }
 
 .metric-value-orange {
-    -fx-text-fill: #D97706;
+    -fx-text-fill: #F59E0B;
 }
 
 .metric-value-red {
-    -fx-text-fill: #D92525;
+    -fx-text-fill: #DC2626;
 }
 
 .metric-subtext {
-    -fx-text-fill: #9E978D;
+    -fx-text-fill: #9CA3AF;
     -fx-font-size: 12px;
 }
 
@@ -203,68 +206,70 @@
    Buttons & Interactive Elements
    -------------------------------------------------------------------------- */
 .btn-danger-primary {
-    -fx-background-color: #D92525;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #DC2626;
+    -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 12px 20px;
+    -fx-padding: 13px 22px;
     -fx-background-radius: 8px;
     -fx-cursor: hand;
 }
 
 .btn-danger-primary:hover {
-    -fx-background-color: #B81B1B;
+    -fx-background-color: #B91C1C;
+    -fx-effect: dropshadow(gaussian, rgba(220, 38, 38, 0.35), 12, 0, 0, 3);
 }
 
 .btn-blue-primary {
-    -fx-background-color: #1D5BD8;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #2563EB;
+    -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 12px 20px;
+    -fx-padding: 13px 22px;
     -fx-background-radius: 8px;
     -fx-cursor: hand;
 }
 
 .btn-blue-primary:hover {
-    -fx-background-color: #1646AA;
+    -fx-background-color: #1D4ED8;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.3), 10, 0, 0, 2);
 }
 
 .btn-dark-action {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #D6D0BE;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-text-fill: #474139;
+    -fx-text-fill: #374151;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-padding: 11px 18px;
+    -fx-padding: 12px 18px;
     -fx-alignment: CENTER_LEFT;
     -fx-cursor: hand;
 }
 
 .btn-dark-action:hover {
-    -fx-background-color: #FAF8F3;
-    -fx-border-color: #B8B09E;
-    -fx-text-fill: #2A2723;
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #D1D5DB;
+    -fx-text-fill: #111827;
 }
 
 /* --------------------------------------------------------------------------
    Readiness Panel & Stock Grid
    -------------------------------------------------------------------------- */
 .readiness-progress .track {
-    -fx-background-color: #E8E4D5;
+    -fx-background-color: #F3F4F6;
     -fx-background-radius: 6px;
 }
 
 .readiness-progress .bar {
-    -fx-background-color: #15803D;
+    -fx-background-color: #10B981;
     -fx-background-radius: 6px;
 }
 
 .stock-box {
-    -fx-background-color: #FAF8F3;
-    -fx-border-color: #E8E4D5;
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #E5E7EB;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-padding: 10px;
@@ -272,18 +277,18 @@
 }
 
 .stock-box-active {
-    -fx-background-color: #F0FDF4;
-    -fx-border-color: #86EFAC;
+    -fx-background-color: #ECFDF5;
+    -fx-border-color: #A7F3D0;
 }
 
 .stock-group-text {
-    -fx-text-fill: #15803D;
+    -fx-text-fill: #10B981;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
 }
 
 .stock-count-text {
-    -fx-text-fill: #5C564E;
+    -fx-text-fill: #4B5563;
     -fx-font-size: 12px;
 }
 
@@ -291,9 +296,9 @@
    Segmented Buttons (Toggle Selection)
    -------------------------------------------------------------------------- */
 .segmented-btn {
-    -fx-background-color: #FAF8F3;
-    -fx-border-color: #D6D0BE;
-    -fx-text-fill: #615C56;
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #D1D5DB;
+    -fx-text-fill: #6B7280;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-padding: 10px 20px;
@@ -316,31 +321,31 @@
 }
 
 .segmented-active-red {
-    -fx-background-color: #FDF2F2;
-    -fx-border-color: #D92525;
-    -fx-text-fill: #D92525;
+    -fx-background-color: #FEF2F2;
+    -fx-border-color: #DC2626;
+    -fx-text-fill: #DC2626;
 }
 
 .segmented-active-green {
-    -fx-background-color: #F0FDF4;
-    -fx-border-color: #15803D;
-    -fx-text-fill: #15803D;
+    -fx-background-color: #ECFDF5;
+    -fx-border-color: #10B981;
+    -fx-text-fill: #10B981;
 }
 
 /* --------------------------------------------------------------------------
    Form Inputs & Labels
    -------------------------------------------------------------------------- */
 .form-label {
-    -fx-text-fill: #5C564E;
+    -fx-text-fill: #4B5563;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 0.5px;
 }
 
 .text-input, .combo-box {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #2A2723;
-    -fx-border-color: #D6D0BE;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #111827;
+    -fx-border-color: #D1D5DB;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-padding: 10px 12px;
@@ -348,78 +353,78 @@
 }
 
 .text-input:focused, .combo-box:focused {
-    -fx-border-color: #D92525;
+    -fx-border-color: #2563EB;
 }
 
 .combo-box .list-cell {
-    -fx-text-fill: #2A2723;
-    -fx-background-color: #ffffff;
+    -fx-text-fill: #111827;
+    -fx-background-color: #FFFFFF;
 }
 
 .combo-box .list-cell:hover {
-    -fx-background-color: #D92525;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #2563EB;
+    -fx-text-fill: #FFFFFF;
 }
 
 /* --------------------------------------------------------------------------
-   TableView & Badges (Beige Theme #F5F5DC)
+   TableView & Badges (Modern Executive Light Theme)
    -------------------------------------------------------------------------- */
 .table-view {
     -fx-background-color: transparent;
-    -fx-border-color: #E8E4D5;
+    -fx-border-color: #E5E7EB;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #FAF8F3;
+    -fx-background-color: #F9FAFB;
 }
 
 .table-view .column-header {
     -fx-background-color: transparent;
     -fx-size: 42px;
-    -fx-border-color: #E8E4D5;
+    -fx-border-color: #E5E7EB;
     -fx-border-width: 0 0 1px 0;
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: #78726A;
+    -fx-text-fill: #6B7280;
     -fx-font-weight: bold;
     -fx-font-size: 11px;
     -fx-letter-spacing: 0.5px;
 }
 
 .table-view .table-row-cell {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #2A2723;
-    -fx-border-color: #E8E4D5;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #111827;
+    -fx-border-color: #E5E7EB;
     -fx-border-width: 0 0 1px 0;
 }
 
 .table-view .table-row-cell:odd {
-    -fx-background-color: #FAF8F3;
+    -fx-background-color: #F9FAFB;
 }
 
 .table-view .table-row-cell:hover {
-    -fx-background-color: #F0ECD9;
+    -fx-background-color: #F3F4F6;
 }
 
 .table-view .table-row-cell:selected {
-    -fx-background-color: #FDF2F2;
-    -fx-text-fill: #D92525;
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: #1D4ED8;
 }
 
 .table-cell {
-    -fx-text-fill: #474139;
+    -fx-text-fill: #374151;
     -fx-alignment: CENTER_LEFT;
     -fx-font-size: 13px;
 }
 
 /* Badges */
 .status-badge-available {
-    -fx-background-color: #E6F7EC;
-    -fx-text-fill: #15803D;
-    -fx-border-color: #86EFAC;
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #059669;
+    -fx-border-color: #A7F3D0;
     -fx-border-radius: 14px;
     -fx-background-radius: 14px;
     -fx-padding: 3px 12px;
@@ -428,8 +433,8 @@
 }
 
 .status-badge-unavailable {
-    -fx-background-color: #FCE8E8;
-    -fx-text-fill: #C02626;
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #DC2626;
     -fx-border-color: #FCA5A5;
     -fx-border-radius: 14px;
     -fx-background-radius: 14px;
@@ -439,9 +444,9 @@
 }
 
 .blood-badge {
-    -fx-background-color: #E8F0FE;
-    -fx-text-fill: #1D5BD8;
-    -fx-border-color: #93C5FD;
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: #2563EB;
+    -fx-border-color: #BFDBFE;
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
     -fx-padding: 2px 10px;
