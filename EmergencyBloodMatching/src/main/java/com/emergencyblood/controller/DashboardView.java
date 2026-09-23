@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Screen 1: Dashboard View displaying live metric cards, quick actions,
  * emergency readiness stock grid, and recent donors list.
- * Styled with Light Premium White Theme.
+ * Styled with Premium Cream Theme (#FFFDD0).
  */
 public class DashboardView {
 
@@ -99,10 +99,10 @@ public class DashboardView {
 
         int ratePct = totalDonors > 0 ? (int) Math.round(((double) availableDonors / totalDonors) * 100) : 0;
         Label rateLabel = new Label("Availability Rate");
-        rateLabel.setStyle("-fx-text-fill: #475569; -fx-font-size: 13px; -fx-font-weight: bold;");
+        rateLabel.setStyle("-fx-text-fill: #5C544B; -fx-font-size: 13px; -fx-font-weight: bold;");
 
         Label ratePctLabel = new Label(ratePct + "%");
-        ratePctLabel.setStyle("-fx-text-fill: #16a34a; -fx-font-size: 20px; -fx-font-weight: bold;");
+        ratePctLabel.setStyle("-fx-text-fill: #15803D; -fx-font-size: 20px; -fx-font-weight: bold;");
 
         BorderPane rateHeader = new BorderPane();
         rateHeader.setLeft(rateLabel);
@@ -196,13 +196,13 @@ public class DashboardView {
             row.setPadding(new Insets(6, 0, 6, 0));
 
             Label lblName = new Label(d.getName());
-            lblName.setStyle("-fx-text-fill: #0f172a; -fx-font-weight: bold; -fx-font-size: 13px;");
+            lblName.setStyle("-fx-text-fill: #2C2621; -fx-font-weight: bold; -fx-font-size: 13px;");
 
             Label lblGroup = new Label(d.getBloodGroup());
             lblGroup.getStyleClass().add("blood-badge");
 
             Label lblLoc = new Label(d.getLocation());
-            lblLoc.setStyle("-fx-text-fill: #64748b; -fx-font-size: 13px;");
+            lblLoc.setStyle("-fx-text-fill: #7A7067; -fx-font-size: 13px;");
 
             boolean isAvail = "Available".equalsIgnoreCase(d.getAvailability());
             Label lblStatus = new Label(d.getAvailability());

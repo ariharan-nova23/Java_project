@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Screen 5: Matching Results Screen with Dynamic Donor Ranking Cards.
- * Styled for Light Premium White Theme.
+ * Styled for Premium Cream Theme (#FFFDD0).
  */
 public class MatchingResultsView {
 
@@ -34,26 +34,26 @@ public class MatchingResultsView {
         // 1. Active Request Summary Banner
         VBox requestBanner = new VBox(12);
         requestBanner.getStyleClass().add("card-panel");
-        requestBanner.setStyle("-fx-border-color: #dc2626; -fx-border-width: 0 0 0 4px; -fx-background-color: #fef2f2;");
+        requestBanner.setStyle("-fx-border-color: #D92525; -fx-border-width: 0 0 0 4px; -fx-background-color: #FDF2F2;");
 
         Label bannerTitle = new Label("Active Emergency Blood Request");
-        bannerTitle.setStyle("-fx-text-fill: #991b1b; -fx-font-size: 16px; -fx-font-weight: bold;");
+        bannerTitle.setStyle("-fx-text-fill: #A01B1B; -fx-font-size: 16px; -fx-font-weight: bold;");
 
         GridPane reqGrid = new GridPane();
         reqGrid.setHgap(24);
         reqGrid.setVgap(8);
 
         Label lblGroup = new Label("Required Group: " + (request != null ? request.getRequiredBloodGroup() : "O+"));
-        lblGroup.setStyle("-fx-text-fill: #dc2626; -fx-font-weight: bold; -fx-font-size: 14px;");
+        lblGroup.setStyle("-fx-text-fill: #D92525; -fx-font-weight: bold; -fx-font-size: 14px;");
 
         Label lblUnits = new Label("Units Required: " + (request != null ? request.getUnitsRequired() : 2));
-        lblUnits.setStyle("-fx-text-fill: #334155; -fx-font-size: 14px;");
+        lblUnits.setStyle("-fx-text-fill: #2C2621; -fx-font-size: 14px;");
 
         Label lblLocation = new Label("Location: " + (request != null ? request.getLocation() : "Vijayawada Government Hospital"));
-        lblLocation.setStyle("-fx-text-fill: #334155; -fx-font-size: 14px;");
+        lblLocation.setStyle("-fx-text-fill: #2C2621; -fx-font-size: 14px;");
 
         Label lblUrgency = new Label("Urgency: " + (request != null ? request.getUrgency() : "CRITICAL"));
-        lblUrgency.setStyle("-fx-text-fill: #b91c1c; -fx-font-weight: bold; -fx-font-size: 14px;");
+        lblUrgency.setStyle("-fx-text-fill: #C02626; -fx-font-weight: bold; -fx-font-size: 14px;");
 
         reqGrid.add(lblGroup, 0, 0);
         reqGrid.add(lblUnits, 1, 0);
@@ -82,7 +82,7 @@ public class MatchingResultsView {
             VBox emptyCard = new VBox(10);
             emptyCard.getStyleClass().add("card-panel");
             Label emptyText = new Label("No compatible donors found in system memory for blood group " + reqGroupStr + ".");
-            emptyText.setStyle("-fx-text-fill: #b91c1c; -fx-font-size: 14px;");
+            emptyText.setStyle("-fx-text-fill: #C02626; -fx-font-size: 14px;");
             emptyCard.getChildren().add(emptyText);
             cardsBox.getChildren().add(emptyCard);
         } else {
@@ -134,10 +134,10 @@ public class MatchingResultsView {
         topRow.setAlignment(Pos.CENTER_LEFT);
 
         Label lblRank = new Label(rankLabel);
-        lblRank.setStyle("-fx-background-color: #dc2626; -fx-text-fill: #ffffff; -fx-padding: 4px 12px; -fx-background-radius: 6px; -fx-font-weight: bold; -fx-font-size: 12px;");
+        lblRank.setStyle("-fx-background-color: #D92525; -fx-text-fill: #ffffff; -fx-padding: 4px 12px; -fx-background-radius: 6px; -fx-font-weight: bold; -fx-font-size: 12px;");
 
         Label lblName = new Label(name);
-        lblName.setStyle("-fx-text-fill: #0f172a; -fx-font-size: 17px; -fx-font-weight: bold;");
+        lblName.setStyle("-fx-text-fill: #2C2621; -fx-font-size: 17px; -fx-font-weight: bold;");
 
         Label lblGroupBadge = new Label(bloodGroup);
         lblGroupBadge.getStyleClass().add("blood-badge");
@@ -146,7 +146,7 @@ public class MatchingResultsView {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Label lblScore = new Label("Score: " + priorityScore);
-        lblScore.setStyle("-fx-text-fill: #16a34a; -fx-font-size: 16px; -fx-font-weight: bold;");
+        lblScore.setStyle("-fx-text-fill: #15803D; -fx-font-size: 16px; -fx-font-weight: bold;");
 
         topRow.getChildren().addAll(lblRank, lblName, lblGroupBadge, spacer, lblScore);
 
@@ -155,17 +155,17 @@ public class MatchingResultsView {
         details.setVgap(6);
 
         Label d1 = new Label("Location: " + location + " (" + distance + ")");
-        d1.setStyle("-fx-text-fill: #64748b; -fx-font-size: 13px;");
+        d1.setStyle("-fx-text-fill: #7A7067; -fx-font-size: 13px;");
 
         boolean isAvail = "Available".equalsIgnoreCase(availability);
         Label d2 = new Label("Status: " + availability);
-        d2.setStyle(isAvail ? "-fx-text-fill: #16a34a; -fx-font-size: 13px; -fx-font-weight: bold;" : "-fx-text-fill: #dc2626; -fx-font-size: 13px;");
+        d2.setStyle(isAvail ? "-fx-text-fill: #15803D; -fx-font-size: 13px; -fx-font-weight: bold;" : "-fx-text-fill: #D92525; -fx-font-size: 13px;");
 
         Label d3 = new Label("Response History: " + responseRate);
-        d3.setStyle("-fx-text-fill: #64748b; -fx-font-size: 13px;");
+        d3.setStyle("-fx-text-fill: #7A7067; -fx-font-size: 13px;");
 
         Label d4 = new Label("Phone: " + phone);
-        d4.setStyle("-fx-text-fill: #2563eb; -fx-font-size: 13px; -fx-font-weight: bold;");
+        d4.setStyle("-fx-text-fill: #1D5BD8; -fx-font-size: 13px; -fx-font-weight: bold;");
 
         details.add(d1, 0, 0);
         details.add(d2, 1, 0);
