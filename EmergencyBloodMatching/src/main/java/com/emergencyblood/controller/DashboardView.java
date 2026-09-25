@@ -14,18 +14,20 @@ import java.util.Map;
 
 /**
  * Screen 1: Dashboard View displaying Executive Light KPI cards, Quick Actions,
- * Emergency Readiness Stock Grid, and a Filterable Recent Donors List.
+ * Emergency Readiness Stock Grid, and a Filterable Recent Donors List inside a ScrollPane.
  */
 public class DashboardView {
 
     private final NavigationController navigation;
     private final VBox root;
+    private final ScrollPane scrollPane;
 
     public DashboardView(NavigationController navigation) {
         this.navigation = navigation;
 
         root = new VBox(22);
         root.setAlignment(Pos.TOP_LEFT);
+        root.setPadding(new Insets(4, 4, 20, 4));
 
         int totalDonors = navigation.getSharedDonorList().size();
         long availableDonors = navigation.getSharedDonorList().stream()
@@ -275,6 +277,11 @@ public class DashboardView {
         recentPanel.getChildren().addAll(recentTitle, filterBar, tableHeader, donorRows);
 
         root.getChildren().addAll(metricsGrid, middleGrid, recentPanel);
+
+        // Wrap root in ScrollPane for full vertical scrolling
+        scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("scroll-pane");
     }
 
     private VBox createMetricCard(String title, String value, String subtitle, String colorClass, String valueClass) {
@@ -306,6 +313,6 @@ public class DashboardView {
     }
 
     public Node getView() {
-        return root;
+        return scrollPane;
     }
 }

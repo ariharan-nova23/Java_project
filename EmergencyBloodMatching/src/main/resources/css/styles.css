@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Emergency Blood Matching System - Modern Executive Light Mode (#FBFBFD)
+   Emergency Blood Matching System - Executive Light Mode (Larger Text & Boxes)
    ========================================================================== */
 
 .root {
@@ -8,55 +8,56 @@
     -fx-background: #FBFBFD;
     -fx-focus-color: #DC2626;
     -fx-faint-focus-color: #DC262633;
+    -fx-font-size: 19px;
 }
 
 /* --------------------------------------------------------------------------
-   Sidebar Styling (Crisp White with Delicate Border)
+   Sidebar Styling (Slightly Wider & Larger Buttons)
    -------------------------------------------------------------------------- */
 .sidebar {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E5E7EB;
     -fx-border-width: 0 1px 0 0;
-    -fx-padding: 22px 14px;
+    -fx-padding: 26px 16px;
 }
 
 .brand-icon-box {
     -fx-background-color: #DC2626;
-    -fx-background-radius: 10px;
-    -fx-min-width: 38px;
-    -fx-min-height: 38px;
-    -fx-max-width: 38px;
-    -fx-max-height: 38px;
+    -fx-background-radius: 12px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-max-width: 44px;
+    -fx-max-height: 44px;
     -fx-alignment: CENTER;
 }
 
 .sidebar-title {
     -fx-text-fill: #111827;
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
 
 .sidebar-subtitle {
     -fx-text-fill: #6B7280;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
 }
 
 .sidebar-section-header {
     -fx-text-fill: #9CA3AF;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 1px;
-    -fx-padding: 18px 0 6px 8px;
+    -fx-padding: 22px 0 8px 8px;
 }
 
 .nav-button {
     -fx-background-color: transparent;
     -fx-text-fill: #4B5563;
-    -fx-font-size: 13px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-padding: 11px 14px;
+    -fx-padding: 13px 16px;
     -fx-alignment: CENTER_LEFT;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 10px;
     -fx-cursor: hand;
 }
 
@@ -72,15 +73,15 @@
     -fx-font-weight: bold;
     -fx-border-color: #DC2626;
     -fx-border-width: 0 0 0 4px;
-    -fx-background-radius: 0 8px 8px 0;
+    -fx-background-radius: 0 10px 10px 0;
 }
 
 .sidebar-status-card {
     -fx-background-color: #F9FAFB;
     -fx-border-color: #E5E7EB;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-padding: 12px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 16px;
 }
 
 .status-dot-green {
@@ -89,71 +90,71 @@
 
 .sidebar-status-title {
     -fx-text-fill: #10B981;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
 
 .sidebar-status-desc {
     -fx-text-fill: #6B7280;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
 }
 
 /* --------------------------------------------------------------------------
-   Header Bar Styling
+   Header Bar Styling (Larger Typography & Padding)
    -------------------------------------------------------------------------- */
 .header-bar {
     -fx-background-color: #FFFFFF;
-    -fx-padding: 20px 30px 14px 30px;
+    -fx-padding: 24px 35px 16px 35px;
     -fx-border-color: #E5E7EB;
     -fx-border-width: 0 0 1px 0;
 }
 
 .page-title {
     -fx-text-fill: #111827;
-    -fx-font-size: 24px;
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
 }
 
 .page-subtitle {
     -fx-text-fill: #6B7280;
-    -fx-font-size: 13px;
+    -fx-font-size: 14px;
 }
 
 .header-status-pill {
     -fx-background-color: #ECFDF5;
     -fx-border-color: #A7F3D0;
-    -fx-border-radius: 16px;
-    -fx-background-radius: 16px;
-    -fx-padding: 5px 14px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 18px;
 }
 
 .header-status-pill-text {
     -fx-text-fill: #10B981;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
 /* --------------------------------------------------------------------------
-   Cards & Content Panels (Executive Light Surfaces with Soft Drop Shadows)
+   Cards & Content Panels (Larger Padding & 16px Radius)
    -------------------------------------------------------------------------- */
 .card-panel {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 14px;
+    -fx-background-radius: 16px;
     -fx-border-color: #E5E7EB;
-    -fx-border-radius: 14px;
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
-    -fx-padding: 22px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 10, 0, 0, 2);
+    -fx-padding: 26px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 12, 0, 0, 2);
 }
 
 .metric-card {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 14px;
+    -fx-background-radius: 16px;
     -fx-border-color: #E5E7EB;
-    -fx-border-radius: 14px;
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
-    -fx-padding: 20px 22px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 10, 0, 0, 2);
+    -fx-padding: 22px 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 12, 0, 0, 2);
 }
 
 .metric-card-blue {
@@ -174,14 +175,14 @@
 
 .card-title-muted {
     -fx-text-fill: #6B7280;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 0.5px;
 }
 
 .metric-value-text {
     -fx-text-fill: #111827;
-    -fx-font-size: 38px;
+    -fx-font-size: 44px;
     -fx-font-weight: bold;
 }
 
@@ -199,51 +200,51 @@
 
 .metric-subtext {
     -fx-text-fill: #9CA3AF;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
 }
 
 /* --------------------------------------------------------------------------
-   Buttons & Interactive Elements
+   Buttons & Interactive Elements (Larger Target Area)
    -------------------------------------------------------------------------- */
 .btn-danger-primary {
     -fx-background-color: #DC2626;
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-padding: 13px 22px;
-    -fx-background-radius: 8px;
+    -fx-padding: 14px 24px;
+    -fx-background-radius: 10px;
     -fx-cursor: hand;
 }
 
 .btn-danger-primary:hover {
     -fx-background-color: #B91C1C;
-    -fx-effect: dropshadow(gaussian, rgba(220, 38, 38, 0.35), 12, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(220, 38, 38, 0.35), 14, 0, 0, 3);
 }
 
 .btn-blue-primary {
     -fx-background-color: #2563EB;
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-padding: 13px 22px;
-    -fx-background-radius: 8px;
+    -fx-padding: 14px 24px;
+    -fx-background-radius: 10px;
     -fx-cursor: hand;
 }
 
 .btn-blue-primary:hover {
     -fx-background-color: #1D4ED8;
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.3), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.3), 12, 0, 0, 2);
 }
 
 .btn-dark-action {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E5E7EB;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-text-fill: #374151;
-    -fx-font-size: 13px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 12px 18px;
+    -fx-padding: 13px 20px;
     -fx-alignment: CENTER_LEFT;
     -fx-cursor: hand;
 }
@@ -255,24 +256,25 @@
 }
 
 /* --------------------------------------------------------------------------
-   Readiness Panel & Stock Grid
+   Readiness Panel & Stock Grid (Larger Stock Boxes)
    -------------------------------------------------------------------------- */
 .readiness-progress .track {
     -fx-background-color: #F3F4F6;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
+    -fx-pref-height: 12px;
 }
 
 .readiness-progress .bar {
     -fx-background-color: #10B981;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
 }
 
 .stock-box {
     -fx-background-color: #F9FAFB;
     -fx-border-color: #E5E7EB;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 14px 10px;
     -fx-alignment: CENTER;
 }
 
@@ -284,12 +286,13 @@
 .stock-group-text {
     -fx-text-fill: #10B981;
     -fx-font-weight: bold;
-    -fx-font-size: 13px;
+    -fx-font-size: 15px;
 }
 
 .stock-count-text {
     -fx-text-fill: #4B5563;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
 }
 
 /* --------------------------------------------------------------------------
@@ -299,15 +302,15 @@
     -fx-background-color: #F9FAFB;
     -fx-border-color: #D1D5DB;
     -fx-text-fill: #6B7280;
-    -fx-font-size: 13px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 10px 20px;
+    -fx-padding: 12px 22px;
     -fx-cursor: hand;
 }
 
 .segmented-btn-left {
-    -fx-background-radius: 8px 0 0 8px;
-    -fx-border-radius: 8px 0 0 8px;
+    -fx-background-radius: 10px 0 0 10px;
+    -fx-border-radius: 10px 0 0 10px;
 }
 
 .segmented-btn-middle {
@@ -316,8 +319,8 @@
 }
 
 .segmented-btn-right {
-    -fx-background-radius: 0 8px 8px 0;
-    -fx-border-radius: 0 8px 8px 0;
+    -fx-background-radius: 0 10px 10px 0;
+    -fx-border-radius: 0 10px 10px 0;
 }
 
 .segmented-active-red {
@@ -337,7 +340,7 @@
    -------------------------------------------------------------------------- */
 .form-label {
     -fx-text-fill: #4B5563;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 0.5px;
 }
@@ -346,10 +349,10 @@
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #111827;
     -fx-border-color: #D1D5DB;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-padding: 10px 12px;
-    -fx-font-size: 14px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 14px;
+    -fx-font-size: 15px;
 }
 
 .text-input:focused, .combo-box:focused {
@@ -359,6 +362,7 @@
 .combo-box .list-cell {
     -fx-text-fill: #111827;
     -fx-background-color: #FFFFFF;
+    -fx-font-size: 14px;
 }
 
 .combo-box .list-cell:hover {
@@ -367,13 +371,13 @@
 }
 
 /* --------------------------------------------------------------------------
-   TableView & Badges (Modern Executive Light Theme)
+   TableView & Badges (Larger Text & Spacing)
    -------------------------------------------------------------------------- */
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: #E5E7EB;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
 }
 
 .table-view .column-header-background {
@@ -382,7 +386,7 @@
 
 .table-view .column-header {
     -fx-background-color: transparent;
-    -fx-size: 42px;
+    -fx-size: 48px;
     -fx-border-color: #E5E7EB;
     -fx-border-width: 0 0 1px 0;
 }
@@ -390,7 +394,7 @@
 .table-view .column-header .label {
     -fx-text-fill: #6B7280;
     -fx-font-weight: bold;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
     -fx-letter-spacing: 0.5px;
 }
 
@@ -417,7 +421,7 @@
 .table-cell {
     -fx-text-fill: #374151;
     -fx-alignment: CENTER_LEFT;
-    -fx-font-size: 13px;
+    -fx-font-size: 14px;
 }
 
 /* Badges */
@@ -425,33 +429,33 @@
     -fx-background-color: #ECFDF5;
     -fx-text-fill: #059669;
     -fx-border-color: #A7F3D0;
-    -fx-border-radius: 14px;
-    -fx-background-radius: 14px;
-    -fx-padding: 3px 12px;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 4px 14px;
     -fx-font-weight: bold;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
 }
 
 .status-badge-unavailable {
     -fx-background-color: #FEF2F2;
     -fx-text-fill: #DC2626;
     -fx-border-color: #FCA5A5;
-    -fx-border-radius: 14px;
-    -fx-background-radius: 14px;
-    -fx-padding: 3px 12px;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 4px 14px;
     -fx-font-weight: bold;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
 }
 
 .blood-badge {
     -fx-background-color: #EFF6FF;
     -fx-text-fill: #2563EB;
     -fx-border-color: #BFDBFE;
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
-    -fx-padding: 2px 10px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 3px 12px;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
 }
 
 /* ScrollPane */

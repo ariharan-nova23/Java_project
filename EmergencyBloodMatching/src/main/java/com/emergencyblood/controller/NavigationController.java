@@ -76,7 +76,7 @@ public class NavigationController {
 
         // 4. Create Content Area
         contentArea = new StackPane();
-        contentArea.setPadding(new Insets(25));
+        contentArea.setPadding(new Insets(30));
         mainLayout.setCenter(contentArea);
 
         // Default screen: Dashboard
@@ -100,15 +100,15 @@ public class NavigationController {
     }
 
     private VBox createSidebar() {
-        VBox box = new VBox(10);
+        VBox box = new VBox(12);
         box.getStyleClass().add("sidebar");
-        box.setPrefWidth(250);
+        box.setPrefWidth(270);
 
         // Brand Icon & Titles
         StackPane iconBox = new StackPane();
         iconBox.getStyleClass().add("brand-icon-box");
         Label iconLabel = new Label("🩸");
-        iconLabel.setStyle("-fx-font-size: 18px;");
+        iconLabel.setStyle("-fx-font-size: 20px;");
         iconBox.getChildren().add(iconLabel);
 
         Label logoTitle = new Label("Emergency Blood");
@@ -117,9 +117,9 @@ public class NavigationController {
         Label logoSubtitle = new Label("v1.0 · SRM University-AP");
         logoSubtitle.getStyleClass().add("sidebar-subtitle");
 
-        VBox brandText = new VBox(1, logoTitle, logoSubtitle);
+        VBox brandText = new VBox(2, logoTitle, logoSubtitle);
 
-        HBox brandHeader = new HBox(12, iconBox, brandText);
+        HBox brandHeader = new HBox(14, iconBox, brandText);
         brandHeader.setAlignment(Pos.CENTER_LEFT);
         brandHeader.setPadding(new Insets(0, 0, 15, 4));
 
@@ -138,13 +138,13 @@ public class NavigationController {
         navButtons.put("Donor Management", btnManagement);
         navButtons.put("Matching Results", btnResults);
 
-        VBox menuBox = new VBox(6, sectionNav, btnDashboard, btnRequest, btnRegister, btnManagement, btnResults);
+        VBox menuBox = new VBox(8, sectionNav, btnDashboard, btnRequest, btnRegister, btnManagement, btnResults);
 
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
         // Sidebar Bottom Status Card
-        VBox statusCard = new VBox(6);
+        VBox statusCard = new VBox(8);
         statusCard.getStyleClass().add("sidebar-status-card");
 
         Circle dot = new Circle(4);

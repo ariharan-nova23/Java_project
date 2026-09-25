@@ -10,12 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 /**
- * Screen 2: Emergency Blood Request Form with Premium Cream Theme (#FFFDD0).
+ * Screen 2: Emergency Blood Request Form with ScrollPane wrapper.
  */
 public class EmergencyRequestView {
 
     private final NavigationController navigation;
     private final VBox root;
+    private final ScrollPane scrollPane;
     private String selectedUrgency = "CRITICAL";
 
     public EmergencyRequestView(NavigationController navigation) {
@@ -23,14 +24,15 @@ public class EmergencyRequestView {
 
         root = new VBox(20);
         root.setAlignment(Pos.TOP_LEFT);
+        root.setPadding(new Insets(4, 4, 20, 4));
 
         // 1. Top Emergency Alert Banner
         HBox banner = new HBox(10);
-        banner.setStyle("-fx-background-color: #FDF2F2; -fx-border-color: #FCA5A5; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 14px 18px;");
+        banner.setStyle("-fx-background-color: #FEF2F2; -fx-border-color: #FCA5A5; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 14px 18px;");
         banner.setAlignment(Pos.CENTER_LEFT);
 
         Label bannerText = new Label("⚠   Immediate response required — all compatible donors alerted");
-        bannerText.setStyle("-fx-text-fill: #C02626; -fx-font-weight: bold; -fx-font-size: 13px;");
+        bannerText.setStyle("-fx-text-fill: #DC2626; -fx-font-weight: bold; -fx-font-size: 13px;");
         banner.getChildren().add(bannerText);
 
         // 2. Request Details Card Panel
@@ -111,7 +113,7 @@ public class EmergencyRequestView {
         );
 
         // Submit Button
-        Button btnFindDonors = new Button("◎   Find Matching Donors");
+        Button btnFindDonors = new Button("🚨   Find Matching Donors");
         btnFindDonors.getStyleClass().add("btn-danger-primary");
         btnFindDonors.setOnAction(e -> {
             String group = comboBloodGroup.getValue();
@@ -167,21 +169,25 @@ public class EmergencyRequestView {
         // 3. Footer Algorithm Info Card
         VBox infoCard = new VBox(8);
         infoCard.setMaxWidth(680);
-        infoCard.setStyle("-fx-background-color: #FAF7EC; -fx-border-color: #EFEAD8; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 14px 18px;");
+        infoCard.setStyle("-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 14px 18px;");
 
         Label infoText = new Label(
             "Matching algorithm: Donors are ranked by blood compatibility, geographic proximity, current availability, " +
             "and historical response rate. O- universal donors are included for critical requests."
         );
-        infoText.setStyle("-fx-text-fill: #7A7067; -fx-font-size: 12px;");
+        infoText.setStyle("-fx-text-fill: #6B7280; -fx-font-size: 12px;");
         infoText.setWrapText(true);
 
         infoCard.getChildren().add(infoText);
 
         root.getChildren().addAll(banner, formPanel, infoCard);
+
+        scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("scroll-pane");
     }
 
     public Node getView() {
-        return root;
+        return scrollPane;
     }
 }

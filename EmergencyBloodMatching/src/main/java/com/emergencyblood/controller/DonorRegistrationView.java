@@ -10,12 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 /**
- * Screen 3: Donor Registration Form with 2-Column Grid and Segmented Availability Toggle.
+ * Screen 3: Donor Registration Form with 2-Column Grid and ScrollPane wrapper.
  */
 public class DonorRegistrationView {
 
     private final NavigationController navigation;
     private final VBox root;
+    private final ScrollPane scrollPane;
     private String selectedAvailability = "Available";
 
     public DonorRegistrationView(NavigationController navigation) {
@@ -23,6 +24,7 @@ public class DonorRegistrationView {
 
         root = new VBox(20);
         root.setAlignment(Pos.TOP_LEFT);
+        root.setPadding(new Insets(4, 4, 20, 4));
 
         VBox formPanel = new VBox(18);
         formPanel.getStyleClass().add("card-panel");
@@ -209,9 +211,13 @@ public class DonorRegistrationView {
 
         formPanel.getChildren().addAll(sectionTitle, formFields, btnBox);
         root.getChildren().add(formPanel);
+
+        scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("scroll-pane");
     }
 
     public Node getView() {
-        return root;
+        return scrollPane;
     }
 }
