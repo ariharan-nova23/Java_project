@@ -289,7 +289,7 @@ public class DashboardView {
         card.getStyleClass().addAll("metric-card", "metric-card-" + colorClass);
 
         Label lblValue = new Label(value);
-        lblValue.getStyleClass().add(valueClass);
+        lblValue.getStyleClass().addAll("metric-value", valueClass);
 
         Label lblTitle = new Label(title);
         lblTitle.getStyleClass().add("card-title-muted");
