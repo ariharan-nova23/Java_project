@@ -1,0 +1,103 @@
+# ===============================
+# Java & Bytecode
+# ===============================
+*.class
+*.ctxt
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+hs_err_pid*
+replay_pid*
+
+# ===============================
+# Build Outputs & Packaging
+# ===============================
+target/
+bin/
+out/
+build/
+dist/
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ===============================
+# Environment & Secret Files
+# ===============================
+.env
+.env.*
+!.env.example
+*.local
+
+# ===============================
+# Maven
+# ===============================
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ===============================
+# IDEs & Code Editors
+# ===============================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# Visual Studio Code
+.vscode/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+nbproject/genfiles.properties
+
+# ===============================
+# Operating System Files
+# ===============================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+# Database credentials
+.env
+
+# Build files
+target/
+
+# IDE files
+.idea/
+.vscode/
