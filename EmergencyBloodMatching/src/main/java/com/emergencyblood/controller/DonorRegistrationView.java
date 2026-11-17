@@ -2,7 +2,10 @@ package com.emergencyblood.controller;
 
 import com.emergencyblood.model.Donor;
 import com.emergencyblood.util.AlertUtil;
+import com.emergencyblood.util.BloodMatcher;
+import com.emergencyblood.util.DatabaseExecutor;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -10,7 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 /**
- * Screen 3: Donor Registration Form with 2-Column Grid and ScrollPane wrapper.
+ * Screen 3: Donor Registration Form with MySQL Database Persistence.
  */
 public class DonorRegistrationView {
 
@@ -147,8 +150,9 @@ public class DonorRegistrationView {
             String phone = txtPhone.getText().trim();
             String location = txtLocation.getText().trim();
 
-            if (name.isEmpty()) {
-                AlertUtil.showError("Validation Error", "Missing Name", "Please enter the donor's full name.");
+            // 1. Input Validation
+            if (name.isEmpty() || name.length() < 2) {
+                AlertUtil.showError("Validation Error", "Missing or Invalid Name", "Please enter the donor's full name (at least 2 characters).");
                 return;
             }
 
@@ -169,7 +173,7 @@ public class DonorRegistrationView {
                 return;
             }
 
-            if (group == null || group.isEmpty()) {
+            if (group == null || !BloodMatcher.isValidBloodGroup(group)) {
                 AlertUtil.showError("Validation Error", "Missing Blood Group", "Please select a valid blood group.");
                 return;
             }
@@ -179,30 +183,66 @@ public class DonorRegistrationView {
                 return;
             }
 
-            if (location.isEmpty()) {
-                AlertUtil.showError("Validation Error", "Missing Location", "Please enter the donor's location.");
+            if (!phone.matches("^[0-9+\\-\\s()]{7,20}$")) {
+                AlertUtil.showError("Validation Error", "Invalid Phone Format", "Please enter a valid phone number (digits only, e.g. 9876543210).");
                 return;
             }
 
-            int newId = navigation.getSharedDonorList().size() + 1;
-            Donor donor = new Donor(newId, name, group, age, phone, location, selectedAvailability);
-            navigation.getSharedDonorList().add(donor);
+            if (location.isEmpty()) {
+                AlertUtil.showError("Validation Error", "Missing Location", "Please enter the donor's city or location.");
+                return;
+            }
 
-            AlertUtil.showInfo(
-                "Registration Successful", 
-                "Donor Registered", 
-                "Donor '" + name + "' (ID: " + newId + ") registered successfully."
-            );
+            // 2. Prepare Donor Entity
+            Donor donor = new Donor(0, name, group, age, phone, location, selectedAvailability);
 
-            // Clear inputs
-            txtName.clear();
-            txtAge.clear();
-            comboBloodGroup.setValue(null);
-            txtPhone.clear();
-            txtLocation.clear();
-            selectedAvailability = "Available";
-            btnAvailable.getStyleClass().add("segmented-active-green");
-            btnUnavailable.getStyleClass().remove("segmented-active-green");
+            // 3. Save to MySQL via Background Task
+            btnRegister.setDisable(true);
+            btnClear.setDisable(true);
+            btnRegister.setText("Registering...");
+
+            Task<Boolean> task = new Task<>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return navigation.getDonorDAO().addDonor(donor);
+                }
+            };
+
+            task.setOnSucceeded(ev -> {
+                btnRegister.setDisable(false);
+                btnClear.setDisable(false);
+                btnRegister.setText("+   Register Donor");
+
+                navigation.getSharedDonorList().add(donor);
+
+                AlertUtil.showInfo(
+                    "Registration Successful", 
+                    "Donor Saved to Database", 
+                    "Donor '" + name + "' (ID: #" + donor.getId() + ") was successfully registered into MySQL."
+                );
+
+                // Clear inputs
+                txtName.clear();
+                txtAge.clear();
+                comboBloodGroup.setValue(null);
+                txtPhone.clear();
+                txtLocation.clear();
+                selectedAvailability = "Available";
+                btnAvailable.getStyleClass().add("segmented-active-green");
+                btnUnavailable.getStyleClass().remove("segmented-active-green");
+            });
+
+            task.setOnFailed(ev -> {
+                btnRegister.setDisable(false);
+                btnClear.setDisable(false);
+                btnRegister.setText("+   Register Donor");
+
+                Throwable err = task.getException();
+                String errMsg = err != null ? err.getMessage() : "Database connection failed.";
+                AlertUtil.showError("Database Error", "Registration Failed", errMsg);
+            });
+
+            DatabaseExecutor.executeTask(task);
         });
 
         HBox btnBox = new HBox(12, btnClear, btnRegister);

@@ -2,6 +2,8 @@ package com.emergencyblood.model;
 
 import javafx.beans.property.*;
 
+import java.sql.Timestamp;
+
 /**
  * Model class representing an Emergency Blood Request in the system.
  */
@@ -11,13 +13,21 @@ public class BloodRequest {
     private final IntegerProperty unitsRequired;
     private final StringProperty location;
     private final StringProperty urgency;
+    private final StringProperty status;
+    private final ObjectProperty<Timestamp> requestDate;
 
     public BloodRequest(int id, String requiredBloodGroup, int unitsRequired, String location, String urgency) {
+        this(id, requiredBloodGroup, unitsRequired, location, urgency, "Pending", new Timestamp(System.currentTimeMillis()));
+    }
+
+    public BloodRequest(int id, String requiredBloodGroup, int unitsRequired, String location, String urgency, String status, Timestamp requestDate) {
         this.id = new SimpleIntegerProperty(id);
         this.requiredBloodGroup = new SimpleStringProperty(requiredBloodGroup);
         this.unitsRequired = new SimpleIntegerProperty(unitsRequired);
         this.location = new SimpleStringProperty(location);
         this.urgency = new SimpleStringProperty(urgency);
+        this.status = new SimpleStringProperty(status != null ? status : "Pending");
+        this.requestDate = new SimpleObjectProperty<>(requestDate != null ? requestDate : new Timestamp(System.currentTimeMillis()));
     }
 
     // ID
@@ -44,4 +54,14 @@ public class BloodRequest {
     public String getUrgency() { return urgency.get(); }
     public void setUrgency(String urgency) { this.urgency.set(urgency); }
     public StringProperty urgencyProperty() { return urgency; }
+
+    // Status
+    public String getStatus() { return status.get(); }
+    public void setStatus(String status) { this.status.set(status); }
+    public StringProperty statusProperty() { return status; }
+
+    // Request Date
+    public Timestamp getRequestDate() { return requestDate.get(); }
+    public void setRequestDate(Timestamp requestDate) { this.requestDate.set(requestDate); }
+    public ObjectProperty<Timestamp> requestDateProperty() { return requestDate; }
 }

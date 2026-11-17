@@ -2,6 +2,7 @@ package com.emergencyblood.controller;
 
 import com.emergencyblood.model.Donor;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,12 +16,21 @@ import java.util.Map;
 /**
  * Screen 1: Dashboard View displaying Executive Light KPI cards, Quick Actions,
  * Emergency Readiness Stock Grid, and a Filterable Recent Donors List inside a ScrollPane.
+ * Connected reactively to MySQL-backed shared data.
  */
 public class DashboardView {
 
     private final NavigationController navigation;
     private final VBox root;
     private final ScrollPane scrollPane;
+
+    private Label lblTotalDonors;
+    private Label lblAvailDonors;
+    private Label lblActiveRequests;
+    private Label lblCriticalRequests;
+    private Label lblRatePct;
+    private ProgressBar progressBar;
+    private final Map<String, Label> stockCountLabels = new HashMap<>();
 
     public DashboardView(NavigationController navigation) {
         this.navigation = navigation;
@@ -29,24 +39,22 @@ public class DashboardView {
         root.setAlignment(Pos.TOP_LEFT);
         root.setPadding(new Insets(4, 4, 20, 4));
 
-        int totalDonors = navigation.getSharedDonorList().size();
-        long availableDonors = navigation.getSharedDonorList().stream()
-                .filter(d -> "Available".equalsIgnoreCase(d.getAvailability()))
-                .count();
-
-        boolean hasActiveRequest = navigation.getActiveRequest() != null;
-        int activeRequests = hasActiveRequest ? 1 : 0;
-        int criticalRequests = (hasActiveRequest && "CRITICAL".equalsIgnoreCase(navigation.getActiveRequest().getUrgency())) ? 1 : 0;
-
         // 1. Metric KPI Cards (Top 4-Column Grid)
         GridPane metricsGrid = new GridPane();
         metricsGrid.setHgap(16);
         metricsGrid.setVgap(16);
 
-        VBox card1 = createMetricCard("Registered Donors", String.valueOf(totalDonors), "Total in system", "blue", "metric-value-text");
-        VBox card2 = createMetricCard("Available Donors", String.valueOf(availableDonors), "Ready to respond", "green", "metric-value-green");
-        VBox card3 = createMetricCard("Active Requests", String.valueOf(activeRequests), "Awaiting match", "orange", "metric-value-orange");
-        VBox card4 = createMetricCard("Critical Requests", String.valueOf(criticalRequests), "Immediate need", "red", "metric-value-red");
+        VBox card1 = createMetricCard("Registered Donors", "0", "Total in system", "blue", "metric-value-text");
+        lblTotalDonors = (Label) card1.getChildren().get(0);
+
+        VBox card2 = createMetricCard("Available Donors", "0", "Ready to respond", "green", "metric-value-green");
+        lblAvailDonors = (Label) card2.getChildren().get(0);
+
+        VBox card3 = createMetricCard("Active Requests", "0", "Awaiting match", "orange", "metric-value-orange");
+        lblActiveRequests = (Label) card3.getChildren().get(0);
+
+        VBox card4 = createMetricCard("Critical Requests", "0", "Immediate need", "red", "metric-value-red");
+        lblCriticalRequests = (Label) card4.getChildren().get(0);
 
         metricsGrid.add(card1, 0, 0);
         metricsGrid.add(card2, 1, 0);
@@ -98,18 +106,17 @@ public class DashboardView {
         Label readinessTitle = new Label("EMERGENCY READINESS");
         readinessTitle.getStyleClass().add("card-title-muted");
 
-        int ratePct = totalDonors > 0 ? (int) Math.round(((double) availableDonors / totalDonors) * 100) : 0;
         Label rateLabel = new Label("Availability Rate");
         rateLabel.setStyle("-fx-text-fill: #4B5563; -fx-font-size: 13px; -fx-font-weight: bold;");
 
-        Label ratePctLabel = new Label(ratePct + "%");
-        ratePctLabel.setStyle("-fx-text-fill: #10B981; -fx-font-size: 20px; -fx-font-weight: bold;");
+        lblRatePct = new Label("0%");
+        lblRatePct.setStyle("-fx-text-fill: #10B981; -fx-font-size: 20px; -fx-font-weight: bold;");
 
         BorderPane rateHeader = new BorderPane();
         rateHeader.setLeft(rateLabel);
-        rateHeader.setRight(ratePctLabel);
+        rateHeader.setRight(lblRatePct);
 
-        ProgressBar progressBar = new ProgressBar((double) ratePct / 100.0);
+        progressBar = new ProgressBar(0.0);
         progressBar.setMaxWidth(Double.MAX_VALUE);
         progressBar.getStyleClass().add("readiness-progress");
 
@@ -117,7 +124,6 @@ public class DashboardView {
         stockTitle.getStyleClass().add("card-title-muted");
 
         // Blood Group Stock Grid (8 boxes)
-        Map<String, Integer> stockMap = calculateStockMap();
         GridPane stockGrid = new GridPane();
         stockGrid.setHgap(10);
         stockGrid.setVgap(10);
@@ -125,19 +131,16 @@ public class DashboardView {
         String[] groups = {"O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"};
         for (int i = 0; i < groups.length; i++) {
             String grp = groups[i];
-            int count = stockMap.getOrDefault(grp, 0);
 
             VBox sBox = new VBox(2);
             sBox.getStyleClass().add("stock-box");
-            if (count > 0) {
-                sBox.getStyleClass().add("stock-box-active");
-            }
 
             Label lblGrp = new Label(grp);
             lblGrp.getStyleClass().add("stock-group-text");
 
-            Label lblCnt = new Label(String.valueOf(count));
+            Label lblCnt = new Label("0");
             lblCnt.getStyleClass().add("stock-count-text");
+            stockCountLabels.put(grp, lblCnt);
 
             sBox.getChildren().addAll(lblGrp, lblCnt);
 
@@ -250,8 +253,15 @@ public class DashboardView {
         searchField.textProperty().addListener((obs, oldVal, newVal) -> applyFilters.run());
         statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters.run());
 
-        // Initial render
+        // Refresh metrics and initial rows
+        refreshDashboardMetrics();
         updateListRows.run();
+
+        // Listen for live database/model updates
+        navigation.getSharedDonorList().addListener((ListChangeListener<Donor>) c -> {
+            refreshDashboardMetrics();
+            updateListRows.run();
+        });
 
         // Table Column Headers
         GridPane tableHeader = new GridPane();
@@ -282,6 +292,42 @@ public class DashboardView {
         scrollPane = new ScrollPane(root);
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("scroll-pane");
+    }
+
+    private void refreshDashboardMetrics() {
+        int totalDonors = navigation.getSharedDonorList().size();
+        long availableDonors = navigation.getSharedDonorList().stream()
+                .filter(d -> "Available".equalsIgnoreCase(d.getAvailability()))
+                .count();
+
+        boolean hasActiveRequest = navigation.getActiveRequest() != null;
+        int activeRequests = hasActiveRequest ? 1 : 0;
+        int criticalRequests = (hasActiveRequest && "CRITICAL".equalsIgnoreCase(navigation.getActiveRequest().getUrgency())) ? 1 : 0;
+
+        lblTotalDonors.setText(String.valueOf(totalDonors));
+        lblAvailDonors.setText(String.valueOf(availableDonors));
+        lblActiveRequests.setText(String.valueOf(activeRequests));
+        lblCriticalRequests.setText(String.valueOf(criticalRequests));
+
+        int ratePct = totalDonors > 0 ? (int) Math.round(((double) availableDonors / totalDonors) * 100) : 0;
+        lblRatePct.setText(ratePct + "%");
+        progressBar.setProgress((double) ratePct / 100.0);
+
+        Map<String, Integer> stockMap = calculateStockMap();
+        for (Map.Entry<String, Label> entry : stockCountLabels.entrySet()) {
+            int count = stockMap.getOrDefault(entry.getKey(), 0);
+            entry.getValue().setText(String.valueOf(count));
+            VBox parentBox = (VBox) entry.getValue().getParent();
+            if (parentBox != null) {
+                if (count > 0) {
+                    if (!parentBox.getStyleClass().contains("stock-box-active")) {
+                        parentBox.getStyleClass().add("stock-box-active");
+                    }
+                } else {
+                    parentBox.getStyleClass().remove("stock-box-active");
+                }
+            }
+        }
     }
 
     private VBox createMetricCard(String title, String value, String subtitle, String colorClass, String valueClass) {

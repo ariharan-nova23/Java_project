@@ -2,15 +2,20 @@ package com.emergencyblood.controller;
 
 import com.emergencyblood.model.BloodRequest;
 import com.emergencyblood.util.AlertUtil;
+import com.emergencyblood.util.BloodMatcher;
+import com.emergencyblood.util.DatabaseExecutor;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
+import java.sql.Timestamp;
+
 /**
- * Screen 2: Emergency Blood Request Form with ScrollPane wrapper.
+ * Screen 2: Emergency Blood Request Form with MySQL Database Persistence.
  */
 public class EmergencyRequestView {
 
@@ -120,8 +125,8 @@ public class EmergencyRequestView {
             String unitsStr = txtUnits.getText().trim();
             String location = txtLocation.getText().trim();
 
-            if (group == null || group.isEmpty()) {
-                AlertUtil.showError("Validation Error", "Missing Blood Group", "Please select a required blood group.");
+            if (group == null || !BloodMatcher.isValidBloodGroup(group)) {
+                AlertUtil.showError("Validation Error", "Missing Blood Group", "Please select a valid blood group.");
                 return;
             }
 
@@ -147,17 +152,52 @@ public class EmergencyRequestView {
                 return;
             }
 
-            // Save Active Request & Navigate
-            BloodRequest newRequest = new BloodRequest(102, group, units, location, selectedUrgency);
-            navigation.setActiveRequest(newRequest);
+            // Save Active Request to MySQL via Background Task
+            BloodRequest newRequest = new BloodRequest(0, group, units, location, selectedUrgency, "Pending", new Timestamp(System.currentTimeMillis()));
 
-            AlertUtil.showInfo(
-                "Request Created", 
-                "Emergency Blood Request Submitted", 
-                "Emergency request for " + group + " (" + units + " units) created. Proceeding to donor matching results."
-            );
+            btnFindDonors.setDisable(true);
+            btnFindDonors.setText("Saving Request...");
 
-            navigation.showMatchingResults();
+            Task<Boolean> task = new Task<>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return navigation.getBloodRequestDAO().addRequest(newRequest);
+                }
+            };
+
+            task.setOnSucceeded(ev -> {
+                btnFindDonors.setDisable(false);
+                btnFindDonors.setText("🚨   Find Matching Donors");
+
+                navigation.setActiveRequest(newRequest);
+
+                AlertUtil.showInfo(
+                    "Request Created", 
+                    "Emergency Blood Request Saved", 
+                    "Emergency request #" + newRequest.getId() + " for " + group + " (" + units + " units) saved to database. Proceeding to matching results."
+                );
+
+                navigation.showMatchingResults();
+            });
+
+            task.setOnFailed(ev -> {
+                btnFindDonors.setDisable(false);
+                btnFindDonors.setText("🚨   Find Matching Donors");
+
+                // Proceed with local matching so emergency care is not halted
+                navigation.setActiveRequest(newRequest);
+
+                Throwable err = task.getException();
+                AlertUtil.showError(
+                    "Database Warning", 
+                    "Could Not Persist to MySQL", 
+                    "Request was kept in memory (" + (err != null ? err.getMessage() : "Unknown error") + "). Proceeding to matching."
+                );
+
+                navigation.showMatchingResults();
+            });
+
+            DatabaseExecutor.executeTask(task);
         });
 
         HBox actionBox = new HBox(btnFindDonors);

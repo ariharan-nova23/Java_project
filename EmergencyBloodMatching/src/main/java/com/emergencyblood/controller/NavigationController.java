@@ -1,10 +1,15 @@
 package com.emergencyblood.controller;
 
+import com.emergencyblood.dao.BloodRequestDAO;
+import com.emergencyblood.dao.DonorDAO;
 import com.emergencyblood.model.BloodRequest;
 import com.emergencyblood.model.Donor;
+import com.emergencyblood.util.AlertUtil;
+import com.emergencyblood.util.DatabaseExecutor;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,11 +19,12 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Navigation controller managing sidebar navigation, top header,
- * dynamic screen switching, and shared application state.
+ * dynamic screen switching, database DAOs, and shared application state.
  */
 public class NavigationController {
 
@@ -35,10 +41,13 @@ public class NavigationController {
     private final ObservableList<Donor> sharedDonorList = FXCollections.observableArrayList();
     private BloodRequest activeRequest;
 
+    private final DonorDAO donorDAO = new DonorDAO();
+    private final BloodRequestDAO bloodRequestDAO = new BloodRequestDAO();
+
     public NavigationController() {
         mainLayout = new BorderPane();
 
-        // 1. Initialize Mock Data
+        // 1. Initialize with temporary in-memory mock data so UI is immediately responsive
         initMockData();
 
         // 2. Create Header
@@ -81,6 +90,9 @@ public class NavigationController {
 
         // Default screen: Dashboard
         showDashboard();
+
+        // 5. Load records asynchronously from MySQL database
+        loadDataFromDatabase();
     }
 
     private void initMockData() {
@@ -89,6 +101,105 @@ public class NavigationController {
         sharedDonorList.add(new Donor(3, "Arjun Naidu", "O-", 22, "9876543212", "Guntur", "Available"));
         sharedDonorList.add(new Donor(4, "Ravi Teja", "B+", 20, "9876543213", "Mangalagiri", "Unavailable"));
         sharedDonorList.add(new Donor(5, "Priya Lakshmi", "AB+", 25, "9876543214", "Vijayawada", "Available"));
+    }
+
+    /**
+     * Asynchronously loads donors and recent requests from MySQL.
+     * Seeds initial demo records if the database is empty.
+     */
+    public void loadDataFromDatabase() {
+        Task<List<Donor>> task = new Task<>() {
+            @Override
+            protected List<Donor> call() throws Exception {
+                List<Donor> donors = donorDAO.getAllDonors();
+                if (donors.isEmpty()) {
+                    seedInitialDonors();
+                    donors = donorDAO.getAllDonors();
+                }
+                return donors;
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            List<Donor> dbDonors = task.getValue();
+            if (dbDonors != null && !dbDonors.isEmpty()) {
+                sharedDonorList.setAll(dbDonors);
+                updateSidebarStatusText();
+            }
+            loadActiveRequestFromDatabase();
+        });
+
+        task.setOnFailed(e -> {
+            System.err.println("Could not load donors from MySQL: " + task.getException().getMessage());
+            // Mock data remains active as a resilient offline fallback
+        });
+
+        DatabaseExecutor.executeTask(task);
+    }
+
+    private void seedInitialDonors() {
+        try {
+            donorDAO.addDonor(new Donor(0, "Rahul Sharma", "O+", 20, "9876543210", "Vijayawada", "Available"));
+            donorDAO.addDonor(new Donor(0, "Kiran Reddy", "A+", 21, "9876543211", "Vijayawada", "Available"));
+            donorDAO.addDonor(new Donor(0, "Arjun Naidu", "O-", 22, "9876543212", "Guntur", "Available"));
+            donorDAO.addDonor(new Donor(0, "Ravi Teja", "B+", 20, "9876543213", "Mangalagiri", "Unavailable"));
+            donorDAO.addDonor(new Donor(0, "Priya Lakshmi", "AB+", 25, "9876543214", "Vijayawada", "Available"));
+        } catch (Exception ex) {
+            System.err.println("Seed donors notice: " + ex.getMessage());
+        }
+    }
+
+    private void loadActiveRequestFromDatabase() {
+        Task<BloodRequest> task = new Task<>() {
+            @Override
+            protected BloodRequest call() throws Exception {
+                return bloodRequestDAO.getLatestRequest();
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            BloodRequest latest = task.getValue();
+            if (latest != null && activeRequest == null) {
+                activeRequest = latest;
+                updateSidebarStatusText();
+            }
+        });
+
+        task.setOnFailed(e -> {
+            // Ignore non-critical request loading failure on startup
+        });
+
+        DatabaseExecutor.executeTask(task);
+    }
+
+    /**
+     * Refreshes donors from MySQL database on a background thread.
+     */
+    public void refreshDonorsFromDatabase(Runnable onComplete) {
+        Task<List<Donor>> task = new Task<>() {
+            @Override
+            protected List<Donor> call() throws Exception {
+                return donorDAO.getAllDonors();
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            sharedDonorList.setAll(task.getValue());
+            updateSidebarStatusText();
+            if (onComplete != null) {
+                onComplete.run();
+            }
+        });
+
+        task.setOnFailed(e -> {
+            if (onComplete != null) {
+                onComplete.run();
+            }
+            Throwable ex = task.getException();
+            AlertUtil.showError("Database Error", "Failed to refresh donors", ex != null ? ex.getMessage() : "Unknown error");
+        });
+
+        DatabaseExecutor.executeTask(task);
     }
 
     private void updateSidebarStatusText() {
@@ -229,5 +340,13 @@ public class NavigationController {
     public void setActiveRequest(BloodRequest request) {
         this.activeRequest = request;
         updateSidebarStatusText();
+    }
+
+    public DonorDAO getDonorDAO() {
+        return donorDAO;
+    }
+
+    public BloodRequestDAO getBloodRequestDAO() {
+        return bloodRequestDAO;
     }
 }
